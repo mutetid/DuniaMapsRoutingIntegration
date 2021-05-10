@@ -1,0 +1,39 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="DuniaMaps is a web mapping service developed and maintained by Reach U in partnership with Oakar Services Limited">
+    <title>DuniaMaps Data Collection</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+    <script src="/js/category.js"></script>
+    <script>
+        let details = {
+            coordinates: {
+                lat: -1.2988071,
+                lng: 36.8160473
+            },
+            url: 'http://www.duniamaps.com/tile/{z}/{x}/{y}.png',
+            attribution: 'Map data & copy; <a href="https://duniamaps.com/">DuniaMaps</a>'
+        }
+    </script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div id="map"></div>
+    </div>
+
+    <script src="/js/index.js"></script>
+</body>
+
+</html>

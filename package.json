@@ -1,0 +1,22 @@
+{
+  "name": "duniamapsdc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "duniamapsdc.js",
+  "scripts": {
+    "start": "nodemon duniamapsdc.js"
+  },
+  "author": "Duncan Muteti",
+  "license": "ISC",
+  "dependencies": {
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^9.0.1",
+    "ejs": "^3.1.6",
+    "errorhandler": "^1.5.1",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.7",
+    "mongoose-double": "0.0.1",
+    "nodemon": "^2.0.7",
+    "path": "^0.12.7"
+  }
+}

@@ -1,0 +1,142 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --creamwhite: #f4f5f9;
+  --primaryblue: #004a4d;
+  --coloraccent: #ff9100;
+  --primarydark: #050a1d;
+  --textLight: #f4f5f977;
+  --animate-duration: 800ms;
+  --animate-delay: 0.9s;
+}
+
+body {
+  margin: 0px;
+  padding: 0px;
+  background: white;
+  font-family: "Lora", serif;
+  position: relative;
+  overflow: auto;
+}
+
+div,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+img {
+  margin: 0px;
+  padding: 0px;
+}
+
+.wrapper {
+  position: relative;
+}
+.wrapper #map {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.wrapper .loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #1d4946;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+}
+.wrapper h3 {
+  text-align: center;
+  color: var(--primaryblue);
+  width: 100%;
+}
+.wrapper form {
+  min-width: 300px;
+  padding: 0.5em;
+}
+.wrapper form input {
+  border: none;
+  outline: none;
+  box-shadow: 0px 0px 1px 1px #60606034;
+  padding: 0.5em;
+  border-radius: 5px;
+  width: 100%;
+  margin-bottom: 0.5em;
+  font-size: 10pt;
+  text-align: center;
+}
+.wrapper form .coord {
+  box-shadow: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+.wrapper form .coord input {
+  width: fit-content;
+  display: block;
+  margin: auto;
+  font-size: x-small;
+  box-shadow: none;
+  color: var(--primaryblue);
+  text-align: center;
+}
+.wrapper form button {
+  background: var(--primaryblue);
+  color: white;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5em;
+  display: block;
+  margin: auto;
+  margin-top: 1em;
+  width: 80%;
+}
+.wrapper form select {
+  padding: 0.5em;
+  outline: none;
+  box-shadow: 0px 0px 1px 1px #60606034;
+  background: white;
+  border-radius: 5px;
+  margin-bottom: 0.3em;
+  margin-top: 0.3em;
+  text-align: center;
+  border: none;
+  width: 100%;
+}
+.wrapper form .selct {
+  display: grid !important;
+  grid-template-columns: auto 1fr !important;
+}
+.wrapper form .selct input {
+  width: max-content;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media only screen and (min-width: 0px) and (max-width: 599px) {
+  * {
+    font-size: small;
+  }
+}
+@media only screen and (min-width: 599px) and (max-width: 767px) {
+  * {
+    font-size: small;
+  }
+}
+
+/*# sourceMappingURL=index.css.map */
