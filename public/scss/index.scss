@@ -6,8 +6,8 @@
 
 :root {
     --creamwhite: #f4f5f9;
-    --primaryblue: #004a4d;
-    --coloraccent: #ff9100;
+    --primaryblue: #1d4946;
+    --coloraccent: #40b16d;
     --primarydark: #050a1d;
     --textLight: #f4f5f977;
     --animate-duration: 800ms;
@@ -39,12 +39,55 @@ img {
 .wrapper {
     position: relative;
 
-    #map {
-        width: 100%;
-        height: 100vh;
-        position: absolute;
+    .header {
+        background: var(--primaryblue);
+        color: white;
+        position: fixed;
+        z-index: 999;
         top: 0;
         left: 0;
+        width: 100%;
+        height: 8vh;
+
+        div {
+            max-width: 1200px;
+            width: 100%;
+            margin: auto;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            padding: 0.5em;
+        }
+
+        img {
+            display: block;
+            height: 5vh;
+            margin-bottom: auto;
+            margin-top: auto;
+            cursor: pointer;
+        }
+        h4 {
+            text-align: center;
+            color: white;
+            height: fit-content;
+            padding: 1em;
+            margin-left: auto;
+            margin-bottom: auto;
+            margin-top: auto;
+            display: block;
+            cursor: pointer;
+        }
+        h4:hover {
+            color: var(--coloraccent);
+        }
+    }
+
+    #map {
+        width: 100%;
+        height: 87vh;
+        position: absolute;
+        top: 8vh;
+        left: 0;
+        cursor: auto;
     }
     .loader {
         border: 4px solid #f3f3f3;
@@ -71,27 +114,16 @@ img {
             border-radius: 5px;
             width: 100%;
             margin-bottom: 0.5em;
-            font-size: 10pt;
+            font-size: 9pt;
+        }
+
+        h2 {
+            color: var(--primaryblue);
             text-align: center;
+            margin: .5em;
+            font-size: small;
         }
 
-        .coord {
-            box-shadow: none;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            margin-top: 1em;
-            margin-bottom: 1em;
-
-            input {
-                width: fit-content;
-                display: block;
-                margin: auto;
-                font-size: x-small;
-                box-shadow: none;
-                color: var(--primaryblue);
-                text-align: center;
-            }
-        }
         button {
             background: var(--primaryblue);
             color: white;
@@ -105,25 +137,25 @@ img {
             width: 80%;
         }
 
-        select {
-            padding: 0.5em;
-            outline: none;
-            box-shadow: 0px 0px 1px 1px #60606034;
-            background: white;
-            border-radius: 5px;
-            margin-bottom: 0.3em;
-            margin-top: 0.3em;
-            text-align: center;
-            border: none;
-            width: 100%;
-        }
-
         .selct {
             display: grid !important;
             grid-template-columns: auto 1fr !important;
 
-            input {
-                width: max-content;
+            select {
+                outline: none;
+                box-shadow: 0px 0px 1px 1px #60606034;
+                background: white;
+                border-radius: 5px;
+                margin-bottom: 0.3em;
+                margin-top: 0.3em;
+                text-align: center;
+                border: none;
+                font-size: small;
+            }
+
+            p{
+                width: fit-content;
+                margin-right: .5em;
             }
         }
     }
@@ -136,6 +168,68 @@ img {
         100% {
             transform: rotate(360deg);
         }
+    }
+
+    h1 {
+        width: 100%;
+        text-align: center;
+        padding: 1em;
+        font-size: small;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        background: var(--primarydark);
+        z-index: 999;
+        color: white;
+    }
+
+    #popup:hover {
+        border: 1px solid var(--coloraccent);
+    }
+
+    .inactive {
+        position: fixed;
+        right: 1em;
+        top: 10vh;
+        padding: 0.5em;
+        z-index: 9999;
+        border-radius: 5px;
+        background: #606060;
+        color: white;
+        cursor: pointer;
+    }
+    .active {
+        position: fixed;
+        right: 1em;
+        top: 10vh;
+        padding: 0.5em;
+        z-index: 9999;
+        border-radius: 5px;
+        cursor: pointer;
+        background: var(--coloraccent);
+        color: var(--primarydark);
+    }
+
+    .gps {
+        position: fixed;
+        right: 1em;
+        top: 15vh;
+        padding: 0.5em;
+        z-index: 9999;
+        border-radius: 50%;
+        cursor: pointer;
+        width: 50px;
+        height: 50px;
+    }
+    #total {
+        position: fixed;
+        right: 1em;
+        top: 22vh;
+        padding: 0.5em;
+        z-index: 9999;
+        background: var(--coloraccent);
+        color: white;
+        padding: 0.5em;
     }
 }
 

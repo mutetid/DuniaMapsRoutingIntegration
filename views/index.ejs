@@ -22,7 +22,7 @@
                 lat: -1.2988071,
                 lng: 36.8160473
             },
-            url: 'http://www.duniamaps.com/tile/{z}/{x}/{y}.png',
+            url: 'https://www.duniamaps.com/tile/{z}/{x}/{y}.png',
             attribution: 'Map data & copy; <a href="https://duniamaps.com/">DuniaMaps</a>'
         }
     </script>
@@ -30,7 +30,12 @@
 
 <body>
     <div class="wrapper">
-        <div id="map"></div>
+        <%- include('./partials/header') %>
+            <div id="map"></div>
+            <p id="total"></p>
+            <div onclick="fetchPoi()" class="inactive" id="popup" title="Show/Hide popups">Hide Popups</div>
+            <img onclick="getLocation(18)" src="/images/gps.jpg" class="gps">
+            <h1 id="area">Map is centered to Nairobi CBD</h1>
     </div>
 
     <script src="/js/index.js"></script>
