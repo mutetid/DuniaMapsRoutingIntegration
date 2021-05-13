@@ -4,7 +4,7 @@ buildMap((details.coordinates.lat + 0.008), details.coordinates.lng)
 getLocation(18)
 fetchPoi()
 
-function buildMap(lat,lng) {
+function buildMap(lat, lng) {
     mymap = L.map('map').setView([lat, lng], 15);// initialize map view
 
     L.tileLayer(details.url, {
@@ -12,7 +12,7 @@ function buildMap(lat,lng) {
         apikey: ''
     }).addTo(mymap);
 
-    mymap.on('click', function (e) {
+    mymap.on('dblclick', function (e) {
         const popLocation = e.latlng;
         L.popup().setLatLng(popLocation)
             .setContent(dataEntry(e.latlng))
@@ -27,7 +27,7 @@ function dataEntry(latlng) {
     form.method = 'POST'
     let h3 = document.createElement('h3')
     let coord = document.createElement('h2')
-  
+
     let lat = document.createElement('input')
     lat.name = 'lat'
     lat.style.display = 'none'
@@ -44,7 +44,7 @@ function dataEntry(latlng) {
     short_name.required = true
 
     let div1 = document.createElement('div')
-    div1.setAttribute('class','selct')
+    div1.setAttribute('class', 'selct')
     let lbl1 = document.createElement('p')
     lbl1.textContent = 'Type '
     let poitype = document.createElement('select')
@@ -81,7 +81,7 @@ function dataEntry(latlng) {
         loadSubtype(poitype, poisubtype, subtype, code)
     }
 
-    lat.value =  latlng.lat
+    lat.value = latlng.lat
     lon.value = latlng.lng
     type.value = poitype.value
     subtype.value = poisubtype.value
@@ -123,19 +123,22 @@ function fetchPoi() {
     }
 
     fetch('/poi', { method: "GET" }).then(response => response.json()).then(result => {
-        document.getElementById('total').textContent = result.length + ' POIs'
-        if (mymap && mymap.remove) {
-            mymap.off();
-            mymap.remove();
+        if (result.length > 0) {
+            document.getElementById('total').textContent = result.length + ' POIs'
+            if (mymap && mymap.remove) {
+                mymap.off();
+                mymap.remove();
+            }
+
+            buildMap(parseFloat(result[result.length - 1].lat), parseFloat(result[result.length - 1].lon))
+
+            result.forEach(element => {
+                displayPoi(element)
+            });
+            mymap.flyTo([parseFloat(result[result.length - 1].lat), parseFloat(result[result.length - 1].lon)], 15);
+            document.getElementById('area').textContent = 'Zoomed in to the latest POI'
         }
 
-        buildMap(parseFloat(result[result.length - 1].lat), parseFloat(result[result.length - 1].lon))
-
-        result.forEach(element => {
-            displayPoi(element)
-        });
-        mymap.flyTo([parseFloat(result[result.length-1].lat), parseFloat(result[result.length-1].lon)], 15);
-        document.getElementById('area').textContent = 'Zoomed in to the latest POI'
     })
 }
 
