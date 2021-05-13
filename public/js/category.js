@@ -9,7 +9,9 @@ let types = [
             { code: "105", subtype: "Guesthouse" },
             { code: "106", subtype: "Hostel" },
             { code: "107", subtype: "Hotel" },
-            { code: "108", subtype: "Motel" }
+            { code: "108", subtype: "Motel" },
+            { code: "199", subtype: "Others" }
+            
         ]
     },
     {
@@ -20,7 +22,8 @@ let types = [
             { code: "203", subtype: "Parking" },
             { code: "204", subtype: "Rental car" },
             { code: "205", subtype: "Rest area" },
-            { code: "206", subtype: "Tollgate" }
+            { code: "206", subtype: "Tollgate" },
+            { code: "299", subtype: "Others" }
         ]
     },
     {
@@ -40,7 +43,8 @@ let types = [
             { code: "312", subtype: "Legal" },
             { code: "313", subtype: "Real-estate" },
             { code: "314", subtype: "Telecom" },
-            { code: "315", subtype: "Travel agency" }
+            { code: "315", subtype: "Travel agency" },
+            { code: "399", subtype: "Others" }
         ]
     },
     {
@@ -53,7 +57,8 @@ let types = [
             { code: "405", subtype: "Ice-cream" },
             { code: "406", subtype: "Internet cafe" },
             { code: "407", subtype: "Pub" },
-            { code: "408", subtype: "Restaurant" }
+            { code: "408", subtype: "Restaurant" },
+            { code: "499", subtype: "Others" }
         ]
     },
     {
@@ -62,7 +67,8 @@ let types = [
             { code: "501", subtype: "College" },
             { code: "502", subtype: "Nursery" },
             { code: "503", subtype: "School" },
-            { code: "504", subtype: "University" }
+            { code: "504", subtype: "University" },
+            { code: "599", subtype: "Others" }
         ]
     },
     {
@@ -73,7 +79,8 @@ let types = [
             { code: "603", subtype: "Doctors" },
             { code: "604", subtype: "Hospital" },
             { code: "605", subtype: "Pharmacy" },
-            { code: "606", subtype: "Veterinary" }
+            { code: "606", subtype: "Veterinary" },
+            { code: "699", subtype: "Others" }
         ]
     },
     {
@@ -95,7 +102,8 @@ let types = [
             { code: "714", subtype: "Rock" },
             { code: "715", subtype: "Scrub" },
             { code: "716", subtype: "Swamp" },
-            { code: "717", subtype: "Water" }
+            { code: "717", subtype: "Water" },
+            { code: "799", subtype: "Others" }
         ]
     },
     {
@@ -115,7 +123,8 @@ let types = [
             { code: "812", subtype: "Public Building" },
             { code: "813", subtype: "Social care" },
             { code: "814", subtype: "Toilets" },
-            { code: "815", subtype: "Town hall" }
+            { code: "815", subtype: "Town hall" },
+            { code: "899", subtype: "Others" }
         ]
     },
     {
@@ -127,7 +136,8 @@ let types = [
             { code: "904", subtype: "Islamic" },
             { code: "905", subtype: "Jewish" },
             { code: "906", subtype: "Sikh" },
-            { code: "907", subtype: "Unknown" }
+            { code: "907", subtype: "Unknown" },
+            { code: "999", subtype: "Others" }
         ]
     },
     {
@@ -137,7 +147,8 @@ let types = [
             { code: "1002", subtype: "Hamlet" },
             { code: "1003", subtype: "Suburb" },
             { code: "1004", subtype: "Town" },
-            { code: "1005", subtype: "Village" }
+            { code: "1005", subtype: "Village" },
+            { code: "1099", subtype: "Others" }
         ]
     },
     {
@@ -188,7 +199,8 @@ let types = [
             { code: "1143", subtype: "Supermarket" },
             { code: "1144", subtype: "Tailor" },
             { code: "1145", subtype: "Toys" },
-            { code: "1146", subtype: "Video rental" }
+            { code: "1146", subtype: "Video rental" },
+            { code: "1199", subtype: "Others" }
         ]
     },
     {
@@ -214,7 +226,8 @@ let types = [
             { code: "1218", subtype: "Surfing " },
             { code: "1219", subtype: "Swimming " },
             { code: "1220", subtype: "Tennis" },
-            { code: "1221", subtype: "Volleyball " }
+            { code: "1221", subtype: "Volleyball " },
+            { code: "1299", subtype: "Others" }
 
         ]
     },
@@ -251,7 +264,9 @@ let types = [
             { code: "1328", subtype: "Water tower " },
             { code: "1329", subtype: "Windmill" },
             { code: "1330", subtype: "Wreck" },
-            { code: "1331", subtype: "Zoo" }
+            { code: "1331", subtype: "Zoo" },
+            { code: "1399", subtype: "Others" }
+            
         ]
     },
     {
@@ -262,7 +277,9 @@ let types = [
             { code: "1403", subtype: "Bus stop" },
             { code: "1404", subtype: "Ferry terminal" },
             { code: "1405", subtype: "Station" },
-            { code: "1406", subtype: "Tram stop" }
+            { code: "1406", subtype: "Tram stop" },
+            { code: "1499", subtype: "Others" }
+            
         ]
     }
 ]
