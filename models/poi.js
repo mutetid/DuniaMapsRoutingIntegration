@@ -17,10 +17,6 @@ const poiSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    short_name: {
-        type: String,
-        required: false
-    },
     code: {
         type: String,
         required: false

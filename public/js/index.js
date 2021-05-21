@@ -103,10 +103,10 @@ function dataEntry(latlng) {
     div2.appendChild(poisubtype)
     form.appendChild(type)
     form.appendChild(subtype)
+    form.appendChild(code)
     form.appendChild(button)
     return form
 }
-
 
 function fetchPoi() {
 
@@ -138,13 +138,16 @@ function fetchPoi() {
             mymap.flyTo([parseFloat(result[result.length - 1].lat), parseFloat(result[result.length - 1].lon)], 15);
             document.getElementById('area').textContent = 'Zoomed in to the latest POI'
         }
-
     })
 }
 
-
 function displayPoi(data) {
-    L.marker([parseFloat(data.lat), parseFloat(data.lon)], { title: data.name }).addTo(mymap)
+    L.marker([parseFloat(data.lat), parseFloat(data.lon)], { title: data.name }).addTo(mymap).on('click', () => {
+        popup = new L.Popup();
+        popup.setLatLng([parseFloat(data.lat), parseFloat(data.lon)]);
+        popup.setContent(previewPoi(data));
+        mymap.addLayer(popup)
+    })
     let pp = document.getElementById('popup')
     if (pp.textContent != 'Show Popups') {
         str = (data.name.length > 20) ? data.name.substring(0, 20) + '...' : data.name
@@ -195,4 +198,31 @@ function showPosition(position) {
 
     mymap.flyTo([position.coords.latitude, position.coords.longitude], 17);
     document.getElementById('area').textContent = 'We are using the device location to center the map'
+}
+
+function previewPoi(data) {
+    let form = document.createElement('form')
+    form.action = '/'
+    form.method = 'POST'
+    let h3 = document.createElement('h3')
+    let coord = document.createElement('p')
+    let name = document.createElement('p')
+    let short_name = document.createElement('p')
+    let type = document.createElement('p')
+    let subtype = document.createElement('p')
+
+    h3.textContent = 'Preview POI Data'
+    name.textContent = 'Name: ' + data.name
+    short_name.textContent = 'Short Name: '+ data.short_name
+    type.textContent = 'Type: '+data.type
+    subtype.textContent = 'Subtype: ' + data.subtype
+    coord.textContent = 'Lat: ' + data.lat.substring(0, 10) + ', Lng: ' + data.lon.substring(0, 11)
+
+    form.appendChild(h3)
+    form.appendChild(coord)
+    form.appendChild(name)
+    form.appendChild(short_name)
+    form.appendChild(type)
+    form.appendChild(subtype)
+    return form
 }
