@@ -7,8 +7,17 @@ const url = 'mongodb://localhost/DuniaMapsDB'
 const cookieParser = require('cookie-parser');
 const path = require('path');
 var errorHandler = require('errorhandler');
+var sassMiddleware = require('node-sass-middleware');
 
 const app = express()
+app.use(sassMiddleware({
+    src: path.join(__dirname, 'public/scss'),
+    dest: path.join(__dirname, 'public/css'),
+    debug: false,
+    force: true,
+    outputStyle: 'compressed',
+    prefix: '/css'
+}));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.json());
@@ -46,6 +55,12 @@ app.get('/poi', async (req, res) => {
     res.status(200).json(poi)
 })
 
+app.delete('/:id', async(req,res)=>{
+    POI.findOneAndRemove({ _id: req.params.id }, function (err) {
+        return res.status(200).json({message:"Deleted"})
+    })
+})
+
 app.post('/', async (req, res) => {
     try {
         const poi = new POI(req.body)
@@ -54,6 +69,19 @@ app.post('/', async (req, res) => {
         }).catch(err => {
             console.log(err)
         })
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/:id', async (req, res) => {
+    try {
+        POI.findOneAndUpdate({ _id: req.params.id }, req.body, { upsert: true }, function (err, doc) {
+            if (err) { return console.log(err); }
+            else {
+                return res.redirect('/')
+            }
+        });
     } catch (error) {
         console.log(error)
     }

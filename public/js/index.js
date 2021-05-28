@@ -74,18 +74,17 @@ function dataEntry(latlng) {
         poitype.appendChild(option)
     });
 
-    loadSubtype(poitype, poisubtype, subtype, code)
+    loadSubtype(poitype, poisubtype, subtype, code,"")
 
     poitype.onchange = () => {
         type.value = poitype.value
-        loadSubtype(poitype, poisubtype, subtype, code)
+        loadSubtype(poitype, poisubtype, subtype, code,"")
     }
 
     lat.value = latlng.lat
     lon.value = latlng.lng
     type.value = poitype.value
     subtype.value = poisubtype.value
-    code.value = code.value
     h3.textContent = 'Add POI Data'
     coord.textContent = 'Lat: ' + lat.value.substring(0, 10) + ', Lng: ' + lon.value.substring(0, 11)
 
@@ -105,6 +104,108 @@ function dataEntry(latlng) {
     form.appendChild(subtype)
     form.appendChild(code)
     form.appendChild(button)
+    return form
+}
+
+function dataUpdate(data) {
+    let form = document.createElement('form')
+    form.action = '/'+data._id
+    form.method = 'POST'
+    let h3 = document.createElement('h3')
+    let coord = document.createElement('h2')
+
+    let lat = document.createElement('input')
+    lat.name = 'lat'
+    lat.style.display = 'none'
+    let lon = document.createElement('input')
+    lon.name = 'lon'
+    lon.style.display = 'none'
+    let name = document.createElement('input')
+    name.name = 'name'
+    name.value = data.name
+    name.required = true
+    let short_name = document.createElement('input')
+    short_name.name = 'short_name'
+    short_name.value = data.short_name
+    short_name.required = true
+
+    let div1 = document.createElement('div')
+    div1.setAttribute('class', 'selct')
+    let lbl1 = document.createElement('p')
+    lbl1.textContent = 'Type '
+    let poitype = document.createElement('select')
+    let type = document.createElement('input')
+    type.name = 'type'
+    type.style.display = 'none'
+
+    let div2 = document.createElement('div')
+    div2.setAttribute('class', 'selct')
+    let lbl2 = document.createElement('p')
+    lbl2.textContent = 'Subtype '
+    let poisubtype = document.createElement('select')
+    let subtype = document.createElement('input')
+    subtype.name = 'subtype'
+    subtype.style.display = 'none'
+    let code = document.createElement('input')
+    code.name = 'code'
+    code.style.display = 'none'
+    let button = document.createElement('button')
+    button.type = 'submit'
+    button.textContent = 'Submit'
+
+    types.forEach(element => {
+        let option = document.createElement('option')
+        option.value = element.type
+        option.textContent = element.type
+        poitype.appendChild(option)
+    });
+
+    poitype.value = data.type
+    subtype.value = data.subtype
+
+    loadSubtype(poitype, poisubtype, subtype, code,subtype.value)
+
+    poitype.onchange = () => {
+        type.value = poitype.value
+        loadSubtype(poitype, poisubtype, subtype, code, subtype.value)
+    }
+
+    lat.value = data.lat
+    lon.value = data.lon
+    type.value = poitype.value
+    subtype.value = poisubtype.value
+    h3.textContent = 'Update POI Data'
+    coord.textContent = 'Lat: ' + data.lat.substring(0, 10) + ', Lng: ' + data.lon.substring(0, 11)
+
+    form.appendChild(h3)
+    form.appendChild(coord)
+    form.appendChild(lat)
+    form.appendChild(lon)
+    form.appendChild(name)
+    form.appendChild(short_name)
+    form.appendChild(div1)
+    div1.appendChild(lbl1)
+    div1.appendChild(poitype)
+    form.appendChild(div2)
+    div2.appendChild(lbl2)
+    div2.appendChild(poisubtype)
+    form.appendChild(type)
+    form.appendChild(subtype)
+    form.appendChild(code)
+    form.appendChild(button)
+
+    let del = document.createElement('h6')
+    del.textContent = "Delete POI"
+    del.onclick = ()=>{
+        let url = '/' + data._id
+        fetch(url, { method: "DELETE" }).then(response => response.json()).then(result => {
+            alert(result.message)
+            window.location.href = '/'
+        })
+    }
+
+    form.appendChild(del)
+
     return form
 }
 
@@ -142,12 +243,17 @@ function fetchPoi() {
 }
 
 function displayPoi(data) {
-    L.marker([parseFloat(data.lat), parseFloat(data.lon)], { title: data.name }).addTo(mymap).on('click', () => {
+    
+  let marker =  L.marker([parseFloat(data.lat), parseFloat(data.lon)], { title: data.name }).addTo(mymap).on('click', () => {
         popup = new L.Popup();
         popup.setLatLng([parseFloat(data.lat), parseFloat(data.lon)]);
-        popup.setContent(previewPoi(data));
+        popup.setContent(dataUpdate(data));
         mymap.addLayer(popup)
     })
+    if (data.code == null) {
+        marker._icon.classList.add("huechange");
+    }
+   
     let pp = document.getElementById('popup')
     if (pp.textContent != 'Show Popups') {
         str = (data.name.length > 20) ? data.name.substring(0, 20) + '...' : data.name
@@ -159,8 +265,8 @@ function displayPoi(data) {
     }
 }
 
-function loadSubtype(poitype, poisubtype, subtype, code) {
-
+function loadSubtype(poitype, poisubtype, subtype, code,selected) {
+   
     poisubtype.textContent = ''
     let result = types.filter(obj => {
         return obj.type === poitype.value
@@ -173,6 +279,15 @@ function loadSubtype(poitype, poisubtype, subtype, code) {
         code.value = element.code
         poisubtype.appendChild(option)
     });
+
+    if(selected != ""){
+        poisubtype.value = selected
+        result[0].subtype.forEach(element => {
+            if(element.subtype==selected)
+                code.value = element.code
+        });
+    }
+
     subtype.value = poisubtype.value
     code.value = code.value
     poisubtype.onchange = () => {

@@ -31,6 +31,7 @@ h3,
 h4,
 h5,
 h6,
+select,
 img {
     margin: 0px;
     padding: 0px;
@@ -124,6 +125,18 @@ img {
             font-size: small;
         }
 
+        h6{
+            display: block;
+            margin: auto;
+            cursor: pointer;
+            padding: .5em;
+            margin-top: 1em;
+            width: fit-content;
+        }
+        h6:hover{
+            color: red;
+        }
+
         button {
             background: var(--primaryblue);
             color: white;
@@ -133,7 +146,6 @@ img {
             padding: 0.5em;
             display: block;
             margin: auto;
-            margin-top: 1em;
             width: 80%;
         }
 
@@ -146,11 +158,18 @@ img {
                 box-shadow: 0px 0px 1px 1px #60606034;
                 background: white;
                 border-radius: 5px;
-                margin-bottom: 0.3em;
-                margin-top: 0.3em;
+                margin: auto;
                 text-align: center;
                 border: none;
                 font-size: small;
+                padding: 0.3em;
+                height: fit-content;
+                width: 100%;
+
+                option{
+                      padding: 0.3em;
+                      cursor: pointer;
+                }
             }
 
             p{
@@ -243,3 +262,5 @@ img {
         font-size: small;
     }
 }
+
+img.huechange { filter: hue-rotate(120deg); }
