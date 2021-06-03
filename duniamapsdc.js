@@ -61,6 +61,8 @@ app.delete('/:id', async(req,res)=>{
     })
 })
 
+
+
 app.post('/', async (req, res) => {
     try {
         const poi = new POI(req.body)
@@ -74,6 +76,7 @@ app.post('/', async (req, res) => {
     }
 })
 
+
 app.post('/:id', async (req, res) => {
     try {
         POI.findOneAndUpdate({ _id: req.params.id }, req.body, { upsert: true }, function (err, doc) {
@@ -86,6 +89,7 @@ app.post('/:id', async (req, res) => {
         console.log(error)
     }
 })
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

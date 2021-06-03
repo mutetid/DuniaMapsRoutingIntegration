@@ -47,6 +47,7 @@ let types =  [
                 { code: "315", subtype: "Travel agency" },
                 { code: "316", subtype: "Logistics" },
                 { code: "317", subtype: "Manufacturing" },
+                { code: "318", subtype: "Surveying" },
                 { code: "399", subtype: "Others" }
             ]
         },
@@ -239,7 +240,7 @@ let types =  [
                 { code: "1219", subtype: "Swimming " },
                 { code: "1220", subtype: "Tennis" },
                 { code: "1221", subtype: "Volleyball " },
-                { code: "1222", subtype: "Squash " },
+                { code: "1222", subtype: "Squash" },
                 { code: "1299", subtype: "Others" }
                 
             ]
@@ -267,7 +268,7 @@ let types =  [
                 { code: "1318", subtype: "Nightclub " },
                 { code: "1319", subtype: "Peak" },
                 { code: "1320", subtype: "Pedestrian" },
-                { code: "1321", subtype: "Ruins " },
+                { code: "1321", subtype: "Ruins" },
                 { code: "1322", subtype: "Shelter" },
                 { code: "1323", subtype: "Theatre" },
                 { code: "1324", subtype: "Theme park" },

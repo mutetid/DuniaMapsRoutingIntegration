@@ -49,6 +49,14 @@ const poiSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    street_name: {
+        type: String,
+        required: false
+    },
+    building: {
+        type: String,
+        required: false
+    },
 })
 
 module.exports = mongoose.model('POI', poiSchema)

@@ -43,6 +43,11 @@ function dataEntry(latlng) {
     short_name.placeholder = 'Short Name'
     short_name.required = true
 
+    let bname = document.createElement('input')
+    bname.name = 'building'
+    bname.placeholder = 'Building Name'
+    bname.required = true
+
     let div1 = document.createElement('div')
     div1.setAttribute('class', 'selct')
     let lbl1 = document.createElement('p')
@@ -51,6 +56,15 @@ function dataEntry(latlng) {
     let type = document.createElement('input')
     type.name = 'type'
     type.style.display = 'none'
+
+    let div3 = document.createElement('div')
+    div3.setAttribute('class', 'selct')
+    let lbl3 = document.createElement('p')
+    lbl3.textContent = 'Street Name '
+    let streetSelect = document.createElement('select')
+    let streetName = document.createElement('input')
+    streetName.name = 'street_name'
+    streetName.style.display = 'none'
 
     let div2 = document.createElement('div')
     div2.setAttribute('class', 'selct')
@@ -76,6 +90,8 @@ function dataEntry(latlng) {
 
     loadSubtype(poitype, poisubtype, subtype, code,"")
 
+    loadStreets(streetSelect,streetName,"")
+
     poitype.onchange = () => {
         type.value = poitype.value
         loadSubtype(poitype, poisubtype, subtype, code,"")
@@ -94,6 +110,7 @@ function dataEntry(latlng) {
     form.appendChild(lon)
     form.appendChild(name)
     form.appendChild(short_name)
+    form.appendChild(bname)
     form.appendChild(div1)
     div1.appendChild(lbl1)
     div1.appendChild(poitype)
@@ -103,6 +120,10 @@ function dataEntry(latlng) {
     form.appendChild(type)
     form.appendChild(subtype)
     form.appendChild(code)
+    form.appendChild(div3)
+    div3.appendChild(lbl3)
+    div3.appendChild(streetSelect)
+    form.appendChild(streetName)
     form.appendChild(button)
     return form
 }
@@ -129,6 +150,11 @@ function dataUpdate(data) {
     short_name.value = data.short_name
     short_name.required = true
 
+    let bname = document.createElement('input')
+    bname.name = 'building'
+    bname.placeholder = 'Building Name'
+    bname.required = true
+
     let div1 = document.createElement('div')
     div1.setAttribute('class', 'selct')
     let lbl1 = document.createElement('p')
@@ -137,6 +163,15 @@ function dataUpdate(data) {
     let type = document.createElement('input')
     type.name = 'type'
     type.style.display = 'none'
+
+    let div3 = document.createElement('div')
+    div3.setAttribute('class', 'selct')
+    let lbl3 = document.createElement('p')
+    lbl3.textContent = 'Street Name '
+    let streetSelect = document.createElement('select')
+    let streetName = document.createElement('input')
+    streetName.name = 'street_name'
+    streetName.style.display = 'none'
 
     let div2 = document.createElement('div')
     div2.setAttribute('class', 'selct')
@@ -162,14 +197,17 @@ function dataUpdate(data) {
 
     poitype.value = data.type
     subtype.value = data.subtype
+    streetName.value = data.street_name
 
+    loadStreets(streetSelect, streetName, streetName.value)
     loadSubtype(poitype, poisubtype, subtype, code,subtype.value)
 
     poitype.onchange = () => {
         type.value = poitype.value
-        loadSubtype(poitype, poisubtype, subtype, code, subtype.value)
+        loadSubtype(poitype, poisubtype, subtype, code, "")
     }
 
+    bname.value = data.building
     lat.value = data.lat
     lon.value = data.lon
     type.value = poitype.value
@@ -183,6 +221,7 @@ function dataUpdate(data) {
     form.appendChild(lon)
     form.appendChild(name)
     form.appendChild(short_name)
+    form.appendChild(bname)
     form.appendChild(div1)
     div1.appendChild(lbl1)
     div1.appendChild(poitype)
@@ -192,7 +231,12 @@ function dataUpdate(data) {
     form.appendChild(type)
     form.appendChild(subtype)
     form.appendChild(code)
+    form.appendChild(div3)
+    div3.appendChild(lbl3)
+    div3.appendChild(streetSelect)
+    form.appendChild(streetName)
     form.appendChild(button)
+
 
     let del = document.createElement('h6')
     del.textContent = "Delete POI"
@@ -210,7 +254,6 @@ function dataUpdate(data) {
 }
 
 function fetchPoi() {
-
     let pp = document.getElementById('popup')
     if (pp.textContent == 'Show Popups') {
         pp.textContent = 'Hide Popups'
@@ -232,25 +275,33 @@ function fetchPoi() {
             }
 
             buildMap(parseFloat(result[result.length - 1].lat), parseFloat(result[result.length - 1].lon))
-
+            var markers = L.markerClusterGroup();
             result.forEach(element => {
-                displayPoi(element)
+                displayPoi(element,markers)
             });
-            mymap.flyTo([parseFloat(result[result.length - 1].lat), parseFloat(result[result.length - 1].lon)], 15);
+            mymap.addLayer(markers);
+            mymap.flyTo([parseFloat(result[result.length - 1].lat), parseFloat(result[result.length - 1].lon)], 18);
             document.getElementById('area').textContent = 'Zoomed in to the latest POI'
         }
     })
 }
 
-function displayPoi(data) {
+function displayPoi(data,markers) {
     
-  let marker =  L.marker([parseFloat(data.lat), parseFloat(data.lon)], { title: data.name }).addTo(mymap).on('click', () => {
+  let marker =  L.marker([parseFloat(data.lat), parseFloat(data.lon)], { 
+      icon: L.icon({
+          iconUrl: '../images/ic_location.svg',
+          iconSize: [20, 20],
+          iconAnchor: [10, 10],
+          popupAnchor: [0, -20]
+      })
+    , title: data.name }).on('click', () => {
         popup = new L.Popup();
         popup.setLatLng([parseFloat(data.lat), parseFloat(data.lon)]);
         popup.setContent(dataUpdate(data));
         mymap.addLayer(popup)
     })
-    if (data.code == null) {
+    if (data.street_name == null || data.building == null) {
         marker._icon.classList.add("huechange");
     }
    
@@ -263,15 +314,17 @@ function displayPoi(data) {
         popup1.setContent(popupContent1);
         mymap.addLayer(popup1)
     }
+    markers.addLayer(marker);
 }
 
 function loadSubtype(poitype, poisubtype, subtype, code,selected) {
-   
+    types.sort((a, b) => (a.type > b.type) ? 1 : -1)
     poisubtype.textContent = ''
     let result = types.filter(obj => {
         return obj.type === poitype.value
     })
 
+    result[0].subtype.sort((a, b) => (a.subtype > b.subtype) ? 1 : -1)
     result[0].subtype.forEach(element => {
         let option = document.createElement('option')
         option.value = element.subtype
@@ -293,6 +346,25 @@ function loadSubtype(poitype, poisubtype, subtype, code,selected) {
     poisubtype.onchange = () => {
         subtype.value = poisubtype.value
         code.value = code.value
+    }
+}
+
+function loadStreets(streetSelect, streetName, selected) {
+    streets.sort();
+    streets.forEach(element => {
+        let option = document.createElement('option')
+        option.value = element
+        option.textContent = element
+        streetSelect.appendChild(option)
+    });
+
+    if (selected != "") {
+       streetSelect.value = streetName.value
+    }
+
+    streetName.value = streetSelect.value
+    streetSelect.onchange = () => {
+        streetName.value = streetSelect.value
     }
 }
 
