@@ -88,13 +88,13 @@ function dataEntry(latlng) {
         poitype.appendChild(option)
     });
 
-    loadSubtype(poitype, poisubtype, subtype, code,"")
+    loadSubtype(poitype, poisubtype, subtype, code, "")
 
-    loadStreets(streetSelect,streetName,"")
+    loadStreets(streetSelect, streetName, "")
 
     poitype.onchange = () => {
         type.value = poitype.value
-        loadSubtype(poitype, poisubtype, subtype, code,"")
+        loadSubtype(poitype, poisubtype, subtype, code, "")
     }
 
     lat.value = latlng.lat
@@ -130,7 +130,7 @@ function dataEntry(latlng) {
 
 function dataUpdate(data) {
     let form = document.createElement('form')
-    form.action = '/'+data._id
+    form.action = '/' + data._id
     form.method = 'POST'
     let h3 = document.createElement('h3')
     let coord = document.createElement('h2')
@@ -200,7 +200,7 @@ function dataUpdate(data) {
     streetName.value = data.street_name
 
     loadStreets(streetSelect, streetName, streetName.value)
-    loadSubtype(poitype, poisubtype, subtype, code,subtype.value)
+    loadSubtype(poitype, poisubtype, subtype, code, subtype.value)
 
     poitype.onchange = () => {
         type.value = poitype.value
@@ -240,7 +240,7 @@ function dataUpdate(data) {
 
     let del = document.createElement('h6')
     del.textContent = "Delete POI"
-    del.onclick = ()=>{
+    del.onclick = () => {
         let url = '/' + data._id
         fetch(url, { method: "DELETE" }).then(response => response.json()).then(result => {
             alert(result.message)
@@ -277,7 +277,7 @@ function fetchPoi() {
             buildMap(parseFloat(result[result.length - 1].lat), parseFloat(result[result.length - 1].lon))
             var markers = L.markerClusterGroup();
             result.forEach(element => {
-                displayPoi(element,markers)
+                displayPoi(element, markers)
             });
             mymap.addLayer(markers);
             mymap.flyTo([parseFloat(result[result.length - 1].lat), parseFloat(result[result.length - 1].lon)], 18);
@@ -286,25 +286,43 @@ function fetchPoi() {
     })
 }
 
-function displayPoi(data,markers) {
-    
-  let marker =  L.marker([parseFloat(data.lat), parseFloat(data.lon)], { 
-      icon: L.icon({
-          iconUrl: '../images/ic_location.svg',
-          iconSize: [20, 20],
-          iconAnchor: [10, 10],
-          popupAnchor: [0, -20]
-      })
-    , title: data.name }).on('click', () => {
-        popup = new L.Popup();
-        popup.setLatLng([parseFloat(data.lat), parseFloat(data.lon)]);
-        popup.setContent(dataUpdate(data));
-        mymap.addLayer(popup)
-    })
+function displayPoi(data, markers) {
+
+
     if (data.street_name == null || data.building == null) {
-        marker._icon.classList.add("huechange");
+        let marker = L.marker([parseFloat(data.lat), parseFloat(data.lon)], {
+            icon: L.icon({
+                iconUrl: '../images/ic_location_red.svg',
+                iconSize: [20, 20],
+                iconAnchor: [10, 10],
+                popupAnchor: [0, -20]
+            })
+            , title: data.name
+        }).on('click', () => {
+            popup = new L.Popup();
+            popup.setLatLng([parseFloat(data.lat), parseFloat(data.lon)]);
+            popup.setContent(dataUpdate(data));
+            mymap.addLayer(popup)
+        })
+        markers.addLayer(marker);
+    } else {
+        let marker = L.marker([parseFloat(data.lat), parseFloat(data.lon)], {
+            icon: L.icon({
+                iconUrl: '../images/ic_location.svg',
+                iconSize: [20, 20],
+                iconAnchor: [10, 10],
+                popupAnchor: [0, -20]
+            })
+            , title: data.name
+        }).on('click', () => {
+            popup = new L.Popup();
+            popup.setLatLng([parseFloat(data.lat), parseFloat(data.lon)]);
+            popup.setContent(dataUpdate(data));
+            mymap.addLayer(popup)
+        })
+        markers.addLayer(marker);
     }
-   
+
     let pp = document.getElementById('popup')
     if (pp.textContent != 'Show Popups') {
         str = (data.name.length > 20) ? data.name.substring(0, 20) + '...' : data.name
@@ -314,10 +332,10 @@ function displayPoi(data,markers) {
         popup1.setContent(popupContent1);
         mymap.addLayer(popup1)
     }
-    markers.addLayer(marker);
+
 }
 
-function loadSubtype(poitype, poisubtype, subtype, code,selected) {
+function loadSubtype(poitype, poisubtype, subtype, code, selected) {
     types.sort((a, b) => (a.type > b.type) ? 1 : -1)
     poisubtype.textContent = ''
     let result = types.filter(obj => {
@@ -333,10 +351,10 @@ function loadSubtype(poitype, poisubtype, subtype, code,selected) {
         poisubtype.appendChild(option)
     });
 
-    if(selected != ""){
+    if (selected != "") {
         poisubtype.value = selected
         result[0].subtype.forEach(element => {
-            if(element.subtype==selected)
+            if (element.subtype == selected)
                 code.value = element.code
         });
     }
@@ -359,7 +377,7 @@ function loadStreets(streetSelect, streetName, selected) {
     });
 
     if (selected != "") {
-       streetSelect.value = streetName.value
+        streetSelect.value = streetName.value
     }
 
     streetName.value = streetSelect.value
@@ -400,8 +418,8 @@ function previewPoi(data) {
 
     h3.textContent = 'Preview POI Data'
     name.textContent = 'Name: ' + data.name
-    short_name.textContent = 'Short Name: '+ data.short_name
-    type.textContent = 'Type: '+data.type
+    short_name.textContent = 'Short Name: ' + data.short_name
+    type.textContent = 'Type: ' + data.type
     subtype.textContent = 'Subtype: ' + data.subtype
     coord.textContent = 'Lat: ' + data.lat.substring(0, 10) + ', Lng: ' + data.lon.substring(0, 11)
 
