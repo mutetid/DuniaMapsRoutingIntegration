@@ -67,7 +67,7 @@ app.post('/', async (req, res) => {
     try {
         const poi = new POI(req.body)
         poi.save().then(pd => {
-            return res.redirect('/')
+            return res.status(200).json(pd)
         }).catch(err => {
             console.log(err)
         })

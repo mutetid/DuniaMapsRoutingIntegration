@@ -1,5 +1,8 @@
 var mymap;
-
+var current = {
+    lat: -1.2988071,
+    lon: 36.8160473
+}
 buildMap((details.coordinates.lat + 0.008), details.coordinates.lng)
 getLocation(18)
 fetchPoi()
@@ -45,8 +48,7 @@ function dataEntry(latlng) {
 
     let bname = document.createElement('input')
     bname.name = 'building'
-    bname.placeholder = 'Building Name'
-    bname.required = true
+    bname.placeholder = 'Building Name (Optional)'
 
     let div1 = document.createElement('div')
     div1.setAttribute('class', 'selct')
@@ -104,6 +106,24 @@ function dataEntry(latlng) {
     h3.textContent = 'Add POI Data'
     coord.textContent = 'Lat: ' + lat.value.substring(0, 10) + ', Lng: ' + lon.value.substring(0, 11)
 
+   
+      
+    form.addEventListener("submit", function (event) {
+        const formData = new URLSearchParams(new FormData(form));
+        event.preventDefault()
+        fetch("", {
+            method: "POST",
+            body: formData
+        }).then((res) => {
+            return res.json();
+        }).then((dt)=>{
+            current.lat = dt.lat
+            current.lon = dt.lon
+            fetchPoi()
+        })
+    })
+  
+
     form.appendChild(h3)
     form.appendChild(coord)
     form.appendChild(lat)
@@ -152,8 +172,7 @@ function dataUpdate(data) {
 
     let bname = document.createElement('input')
     bname.name = 'building'
-    bname.placeholder = 'Building Name'
-    bname.required = true
+    bname.placeholder = 'Building Name (Optional)'
 
     let div1 = document.createElement('div')
     div1.setAttribute('class', 'selct')
@@ -207,13 +226,30 @@ function dataUpdate(data) {
         loadSubtype(poitype, poisubtype, subtype, code, "")
     }
 
-    bname.value = data.building
+    if (data.building != null)
+        bname.value = data.building
     lat.value = data.lat
     lon.value = data.lon
     type.value = poitype.value
     subtype.value = poisubtype.value
     h3.textContent = 'Update POI Data'
     coord.textContent = 'Lat: ' + data.lat.substring(0, 10) + ', Lng: ' + data.lon.substring(0, 11)
+
+
+    form.addEventListener("submit", function (event) {
+        const formData = new URLSearchParams(new FormData(form));
+        event.preventDefault()
+        fetch("", {
+            method: "POST",
+            body: formData
+        }).then((res) => {
+            return res.json();
+        }).then((dt) => {
+            current.lat = dt.lat
+            current.lon = dt.lon
+            fetchPoi()
+        })
+    })
 
     form.appendChild(h3)
     form.appendChild(coord)
@@ -254,18 +290,6 @@ function dataUpdate(data) {
 }
 
 function fetchPoi() {
-    let pp = document.getElementById('popup')
-    if (pp.textContent == 'Show Popups') {
-        pp.textContent = 'Hide Popups'
-        pp.classList.remove('inactive')
-        pp.classList.add('active')
-    }
-    else if (popup.textContent == 'Hide Popups') {
-        pp.textContent = 'Show Popups'
-        pp.classList.remove('active')
-        pp.classList.add('inactive')
-    }
-
     fetch('/poi', { method: "GET" }).then(response => response.json()).then(result => {
         if (result.length > 0) {
             document.getElementById('total').textContent = result.length + ' POIs'
@@ -280,7 +304,7 @@ function fetchPoi() {
                 displayPoi(element, markers)
             });
             mymap.addLayer(markers);
-            mymap.flyTo([parseFloat(result[result.length - 1].lat), parseFloat(result[result.length - 1].lon)], 18);
+            mymap.flyTo([current.lat, current.lon], 18);
             document.getElementById('area').textContent = 'Zoomed in to the latest POI'
         }
     })
@@ -288,8 +312,7 @@ function fetchPoi() {
 
 function displayPoi(data, markers) {
 
-
-    if (data.street_name == null || data.building == null) {
+    if (data.street_name == null) {
         let marker = L.marker([parseFloat(data.lat), parseFloat(data.lon)], {
             icon: L.icon({
                 iconUrl: '../images/ic_location_red.svg',
@@ -322,17 +345,6 @@ function displayPoi(data, markers) {
         })
         markers.addLayer(marker);
     }
-
-    let pp = document.getElementById('popup')
-    if (pp.textContent != 'Show Popups') {
-        str = (data.name.length > 20) ? data.name.substring(0, 20) + '...' : data.name
-        var popupContent1 = '<p>' + str + ' </p>',
-            popup1 = new L.Popup();
-        popup1.setLatLng([parseFloat(data.lat), parseFloat(data.lon)]);
-        popup1.setContent(popupContent1);
-        mymap.addLayer(popup1)
-    }
-
 }
 
 function loadSubtype(poitype, poisubtype, subtype, code, selected) {
