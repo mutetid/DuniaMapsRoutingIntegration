@@ -3,6 +3,7 @@ var current = {
     lat: -1.2988071,
     lon: 36.8160473
 }
+var jsonData;
 buildMap((details.coordinates.lat + 0.008), details.coordinates.lng)
 getLocation(18)
 fetchPoi()
@@ -106,8 +107,8 @@ function dataEntry(latlng) {
     h3.textContent = 'Add POI Data'
     coord.textContent = 'Lat: ' + lat.value.substring(0, 10) + ', Lng: ' + lon.value.substring(0, 11)
 
-   
-      
+
+
     form.addEventListener("submit", function (event) {
         const formData = new URLSearchParams(new FormData(form));
         event.preventDefault()
@@ -116,13 +117,13 @@ function dataEntry(latlng) {
             body: formData
         }).then((res) => {
             return res.json();
-        }).then((dt)=>{
+        }).then((dt) => {
             current.lat = dt.lat
             current.lon = dt.lon
             fetchPoi()
         })
     })
-  
+
 
     form.appendChild(h3)
     form.appendChild(coord)
@@ -238,9 +239,9 @@ function dataUpdate(data) {
         const formData = new URLSearchParams(new FormData(form));
         event.preventDefault()
 
-        let url = '/'+ data._id
+        let url = '/' + data._id
         console.log(url)
-  
+
         fetch(url, {
             method: "POST",
             body: formData
@@ -300,6 +301,8 @@ function fetchPoi() {
                 mymap.remove();
             }
 
+            jsonData = result
+            exportDataCSV()
             buildMap(parseFloat(result[result.length - 1].lat), parseFloat(result[result.length - 1].lon))
             var markers = L.markerClusterGroup();
             result.forEach(element => {
@@ -307,7 +310,7 @@ function fetchPoi() {
             });
             mymap.addLayer(markers);
             mymap.flyTo([current.lat, current.lon], 18);
-            document.getElementById('area').textContent = 'Zoomed in to the latest POI'
+
         }
     })
 }
@@ -416,7 +419,6 @@ function showPosition(position) {
     details.coordinates.lng = position.coords.longitude
 
     mymap.flyTo([position.coords.latitude, position.coords.longitude], 17);
-    document.getElementById('area').textContent = 'We are using the device location to center the map'
 }
 
 function previewPoi(data) {
@@ -444,4 +446,26 @@ function previewPoi(data) {
     form.appendChild(type)
     form.appendChild(subtype)
     return form
+}
+
+function exportDataCSV() {
+    var str = '';
+
+    for (var i = 0; i < jsonData.length; i++) {
+        var line = '';
+        if(i==0)
+            str += 'Display,ID,Latitude,Longitude,Name,Short Name,Building,Type,Sub Type,Code,Street Name' + '\r\n';
+        for (var index in jsonData[i]) {
+            if (line != '') line += ','
+            line += jsonData[i][index];
+        }
+        str += line + '\r\n';
+    }
+
+    //Download the file as CSV
+    var downloadLink = document.getElementById("download");
+    var blob = new Blob(["\ufeff", str]);
+    var url = URL.createObjectURL(blob);
+    downloadLink.href = url;
+    downloadLink.download = "duniamapsPOIdata.csv";
 }
