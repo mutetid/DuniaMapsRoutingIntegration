@@ -82,7 +82,7 @@ app.post('/:id', async (req, res) => {
         POI.findOneAndUpdate({ _id: req.params.id }, req.body, { upsert: true }, function (err, doc) {
             if (err) { return console.log(err); }
             else {
-                return res.redirect('/')
+                return res.status(200).json(doc)
             }
         });
     } catch (error) {

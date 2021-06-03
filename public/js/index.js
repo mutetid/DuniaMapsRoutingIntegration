@@ -150,8 +150,6 @@ function dataEntry(latlng) {
 
 function dataUpdate(data) {
     let form = document.createElement('form')
-    form.action = '/' + data._id
-    form.method = 'POST'
     let h3 = document.createElement('h3')
     let coord = document.createElement('h2')
 
@@ -239,7 +237,11 @@ function dataUpdate(data) {
     form.addEventListener("submit", function (event) {
         const formData = new URLSearchParams(new FormData(form));
         event.preventDefault()
-        fetch("", {
+
+        let url = '/'+ data._id
+        console.log(url)
+  
+        fetch(url, {
             method: "POST",
             body: formData
         }).then((res) => {
