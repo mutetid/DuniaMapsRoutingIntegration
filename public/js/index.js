@@ -453,12 +453,23 @@ function exportDataCSV() {
 
     for (var i = 0; i < jsonData.length; i++) {
         var line = '';
-        if(i==0)
+        if (i == 0)
             str += 'Display,ID,Latitude,Longitude,Name,Short Name,Building,Type,Sub Type,Code,Street Name' + '\r\n';
-        for (var index in jsonData[i]) {
-            if (line != '') line += ','
-            line += jsonData[i][index];
-        }
+
+        line += jsonData[i].display + ',';
+        line += jsonData[i]._id + ',';
+        line += jsonData[i].lat + ',';
+        line += jsonData[i].longitude + ',';
+        line += jsonData[i].name + ',';
+        line += jsonData[i].short_name + ',';
+        if (jsonData[i].building)
+            line += jsonData[i].building + ',';
+        else line += '' + ',';
+        line += jsonData[i].type + ',';
+        line += jsonData[i].subtype + ',';
+        line += jsonData[i].code + ',';
+        line += jsonData[i].street_name + ',';
+        
         str += line + '\r\n';
     }
 
@@ -469,3 +480,4 @@ function exportDataCSV() {
     downloadLink.href = url;
     downloadLink.download = "duniamapsPOIdata.csv";
 }
+

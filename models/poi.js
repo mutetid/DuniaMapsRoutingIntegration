@@ -55,7 +55,7 @@ const poiSchema = new mongoose.Schema({
     },
     building: {
         type: String,
-        required: false
+        default: ''
     },
 })
 
