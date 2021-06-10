@@ -454,12 +454,12 @@ function exportDataCSV() {
     for (var i = 0; i < jsonData.length; i++) {
         var line = '';
         if (i == 0)
-            str += 'Display,ID,Latitude,Longitude,Name,Short Name,Building,Type,Sub Type,Code,Street Name' + '\r\n';
+            str += 'ID,Latitude,Longitude,Name,Short Name,Building,Type,Sub Type,Code,Street Name,Display' + '\r\n';
 
-        line += jsonData[i].display + ',';
+      
         line += jsonData[i]._id + ',';
         line += jsonData[i].lat + ',';
-        line += jsonData[i].longitude + ',';
+        line += jsonData[i].lon + ',';
         line += jsonData[i].name + ',';
         line += jsonData[i].short_name + ',';
         if (jsonData[i].building)
@@ -469,6 +469,7 @@ function exportDataCSV() {
         line += jsonData[i].subtype + ',';
         line += jsonData[i].code + ',';
         line += jsonData[i].street_name + ',';
+        line += jsonData[i].display + ',';
         
         str += line + '\r\n';
     }
