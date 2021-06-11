@@ -456,18 +456,18 @@ function exportDataCSV() {
         if (i == 0)
             str += 'ID,Latitude,Longitude,Name,Short Name,Type,Sub Type,Code,Street Name,Display,Building' + '\r\n';
 
-
-        line += jsonData[i]._id + ',';
-        line += jsonData[i].lat + ',';
-        line += jsonData[i].lon + ',';
-        line += jsonData[i].name + ',';
-        line += jsonData[i].short_name + ',';
-        line += jsonData[i].type + ',';
-        line += jsonData[i].subtype + ',';
-        line += jsonData[i].code + ',';
-        line += jsonData[i].street_name + ',';
-        line += jsonData[i].display + ',';
-        line += jsonData[i].building + ',';
+        line += '"' + jsonData[i]._id + '",';
+        line += '"' + jsonData[i].lat + '",';
+        line += '"' + jsonData[i].lon + '",';
+        line += '"' + jsonData[i].name + '",';
+        line += '"' + jsonData[i].short_name + '",';
+        line += '"' + jsonData[i].type + '",';
+        line += '"' + jsonData[i].subtype + '",';
+        line += '"' + jsonData[i].code + '",';
+        line += '"' + jsonData[i].street_name + '",';
+        line += '"' + jsonData[i].display + '",';
+        line += '"' + jsonData[i].building + '",';
+    
 
         str += line + '\r\n';
     }
