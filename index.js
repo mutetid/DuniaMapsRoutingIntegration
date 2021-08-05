@@ -1,9 +1,5 @@
-if (process.env.MODE_ENV !== 'production') {
-    require('dotenv').config()
-}
 const express = require('express')
-const mongoose = require('mongoose')
-const url = 'mongodb://localhost/DuniaMapsDB'
+const fetch = require('node-fetch');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 var errorHandler = require('errorhandler');
@@ -36,60 +32,22 @@ app.use((req, res, next) => {
     next();
 });
 
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
-const con = mongoose.connection
 
-con.on('open', () => {
-    console.log('çonnected...')
-})
-
-const POI = require('./models/poi')
 
 app.get('/', async (req, res) => {
-    let poi = await POI.find({})
-    res.render('index', { poi })
+    res.render('index')
 })
 
-app.get('/poi', async (req, res) => {
-    let poi = await POI.find({})
-    res.status(200).json(poi)
-})
-
-app.delete('/:id', async(req,res)=>{
-    POI.findOneAndRemove({ _id: req.params.id }, function (err) {
-        return res.status(200).json({message:"Deleted"})
-    })
-})
-
-
-
-app.post('/', async (req, res) => {
-    try {
-        const poi = new POI(req.body)
-        poi.save().then(pd => {
-            return res.status(200).json(pd)
+app.get('/route', (req,res)=>{
+    fetch('https://api.duniamaps.com/route?point=-1.297948,36.816498&point=-1.282815,36.810314&locale=en-US&vehicle=car&weighting=fastest&elevation=true&use_miles=false&layer=OpenStreetMap&points_encoded=false')
+        .then(res => res.json())
+        .then(json => {
+            let data = json
+            res.json(data)   
         }).catch(err => {
             console.log(err)
         })
-    } catch (error) {
-        console.log(error)
-    }
 })
-
-
-app.post('/:id', async (req, res) => {
-    try {
-        POI.findOneAndUpdate({ _id: req.params.id }, req.body, { upsert: true }, function (err, doc) {
-            if (err) { return console.log(err); }
-            else {
-                return res.status(200).json(doc)
-            }
-        });
-    } catch (error) {
-        console.log(error)
-    }
-})
-
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

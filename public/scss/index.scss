@@ -82,111 +82,34 @@ img {
         }
     }
 
+    .layout {
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+    }
+
     #map {
-        width: 100%;
-        height: 92vh;
-        position: absolute;
-        top: 8vh;
-        left: 0;
+        height: 100vh;
         cursor: auto;
     }
-    .loader {
-        border: 4px solid #f3f3f3;
-        border-top: 4px solid #1d4946;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        animation: spin 2s linear infinite;
-    }
+
     h3 {
         text-align: center;
         color: var(--primaryblue);
         width: 100%;
-    }
-    form {
-        min-width: 300px;
-        padding: 0.5em;
-
-        input {
-            border: none;
-            outline: none;
-            box-shadow: 0px 0px 1px 1px #60606034;
-            padding: 0.5em;
-            border-radius: 5px;
-            width: 100%;
-            margin-bottom: 0.5em;
-            font-size: 9pt;
-        }
-
-        h2 {
-            color: var(--primaryblue);
-            text-align: center;
-            margin: .5em;
-            font-size: small;
-        }
-
-        h6{
-            display: block;
-            margin: auto;
-            cursor: pointer;
-            padding: .5em;
-            margin-top: 1em;
-            width: fit-content;
-        }
-        h6:hover{
-            color: red;
-        }
-
-        button {
-            background: var(--primaryblue);
-            color: white;
-            outline: none;
-            border: none;
-            border-radius: 5px;
-            padding: 0.5em;
-            display: block;
-            margin: auto;
-            width: 80%;
-        }
-
-        .selct {
-            display: grid !important;
-            grid-template-columns: auto 1fr !important;
-
-            select {
-                outline: none;
-                box-shadow: 0px 0px 1px 1px #60606034;
-                background: white;
-                border-radius: 5px;
-                margin: auto;
-                text-align: center;
-                border: none;
-                font-size: small;
-                padding: 0.3em;
-                height: fit-content;
-                width: 100%;
-
-                option{
-                      padding: 0.3em;
-                      cursor: pointer;
-                }
-            }
-
-            p{
-                width: fit-content;
-                margin-right: .5em;
-            }
-        }
+        padding: .3em;
+        margin: 1em;
     }
 
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
+    h4 {
+        padding: .3em;
+        color: #1d4946;
+        font-weight: 100;
+    }
 
-        100% {
-            transform: rotate(360deg);
-        }
+    #instructions {
+        overflow-y: auto;
+        padding: .5em;
+        margin-top: 1em;
     }
 
     h1 {
@@ -201,66 +124,4 @@ img {
         z-index: 999;
         color: white;
     }
-
-    #popup:hover {
-        border: 1px solid var(--coloraccent);
-    }
-
-    .inactive {
-        position: fixed;
-        right: 1em;
-        top: 10vh;
-        padding: 0.5em;
-        z-index: 9999;
-        border-radius: 5px;
-        background: #606060;
-        color: white;
-        cursor: pointer;
-    }
-    .active {
-        position: fixed;
-        right: 1em;
-        top: 10vh;
-        padding: 0.5em;
-        z-index: 9999;
-        border-radius: 5px;
-        cursor: pointer;
-        background: var(--coloraccent);
-        color: var(--primarydark);
-    }
-
-    .gps {
-        position: fixed;
-        right: 1em;
-        top: 15vh;
-        padding: 0.5em;
-        z-index: 9999;
-        border-radius: 50%;
-        cursor: pointer;
-        width: 50px;
-        height: 50px;
-    }
-    #total {
-        position: fixed;
-        right: 1em;
-        top: 22vh;
-        padding: 0.5em;
-        z-index: 9999;
-        background: var(--coloraccent);
-        color: white;
-        padding: 0.5em;
-    }
 }
-
-@include maxwidth(mobile) {
-    * {
-        font-size: small;
-    }
-}
-@include maxwidth(tablet) {
-    * {
-        font-size: small;
-    }
-}
-
-img.huechange { filter: hue-rotate(120deg); }

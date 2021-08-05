@@ -1,10 +1,12 @@
 {
-  "name": "duniamapsdc",
+  "name": "duniamapsdemo",
   "version": "1.0.0",
   "description": "",
-  "main": "duniamapsdc.js",
+  "main": "index.js",
   "scripts": {
-    "start": "nodemon duniamapsdc.js"
+    "start": "nodemon index.js",
+    "proxy" : "lcp --proxyUrl https://api.duniamaps.com",
+    "proxyinstall" : "npm install -g local-cors-proxy"
   },
   "author": "Duncan Muteti",
   "license": "ISC",
@@ -16,6 +18,7 @@
     "express": "^4.17.1",
     "mongoose": "^5.12.7",
     "mongoose-double": "0.0.1",
+    "node-fetch": "^2.6.1",
     "node-sass-middleware": "^0.11.0",
     "nodemon": "^2.0.7",
     "path": "^0.12.7"
