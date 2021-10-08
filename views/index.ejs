@@ -19,7 +19,14 @@
     <div class="wrapper">
         <div class="layout">
             <div class="sidebar">
-                <br><br>
+                <div class="input">
+                    <p id="inputmessage">Select pick-up location</p>
+                    <div class="wrapper">
+                        <input type="text" id="pickup" oninput="searchPOI(this)" placeholder="Select pick-up location">
+                        <input type="text" id="destination" oninput="searchPOI(this)" placeholder="Search destination">
+                    </div>
+                    <div id="suggestions"></div>
+                </div>
                 <h4>Response</h4>
                 <div id="distance"></div>
                 <div id="instructions"></div>
@@ -38,8 +45,11 @@
             attribution: 'Map data & copy; <a href="https://duniamaps.com/">DuniaMaps</a>'
         }
         var mymap;
+        var points = []
 
         buildMap(details.coordinates.lat, details.coordinates.lng)
+
+
 
         function buildMap(lat, lng) {
             mymap = L.map('map').setView([lat, lng], 15);// initialize map view
@@ -50,23 +60,53 @@
             }).addTo(mymap);
         }
 
-        fetch('/route')
-        .then((resp) => resp.json())
-            .then((data) => {
-                routeDetails(data)
-                console.log(data)
-            })
-            .catch((err) => {
-                console.log(err)
-            });
 
-        function routeDetails(data){
+        function getOptimumRoute(query) {
+            console.log(query)
+            fetch(`/route/${query}`)
+                .then((resp) => resp.json())
+                .then((data) => {
+                    console.log(data)
+                    routeDetails(data)
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+        }
+
+        function searchPOI(e) {
+            if (e.value.length >= 3) {
+                fetch(`/poi/${e.value}`)
+                    .then((resp) => resp.json())
+                    .then((data) => {
+                        console.log(data.features)
+                        let container = document.getElementById('suggestions')
+                        container.innerHTML = ''
+                        data.features.forEach(feature => {
+                            let sugg = document.createElement('h4')
+                            sugg.textContent = feature.properties.name
+                            sugg.onclick = () => {
+                                e.value = feature.properties.name
+                                let coordinates = [feature.geometry.coordinates[1], feature.geometry.coordinates[0]]
+                                
+                                addMarker(coordinates)
+                            }
+                            container.appendChild(sugg)
+                        })
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    });
+            }
+        }
+
+        function routeDetails(data) {
             document.getElementById('distance').textContent = `Distance; ${data.paths[0].distance} meters; Estimated Time: ${convertTime(data.paths[0].time)} seconds`
-            
+
             let instructions = document.getElementById('instructions')
 
             data.paths[0].instructions.forEach(element => {
-                instructions.innerHTML += `<h4> ${element.text} for ${ convertTime(element.time) } seconds </h4>`
+                instructions.innerHTML += `<h4> ${element.text} for ${convertTime(element.time)} seconds </h4>`
             });
 
             var myLines = {
@@ -76,13 +116,22 @@
 
             var myLayer = L.geoJSON().addTo(mymap);
             myLayer.addData(myLines);
+        }
 
-            L.marker([-1.297948, 36.816498]).addTo(mymap);
-            L.marker([-1.282815, 36.810314]).addTo(mymap);
-        }  
-        
-        function convertTime(secs){
-            return secs;
+        function convertTime(secs) {
+            return Math.floor(secs / 60);
+        }
+
+        function addMarker(coords) {
+            L.marker(coords).addTo(mymap);
+            mymap.flyTo(coords, 12)
+
+            points.push(coords)
+
+            if (points.length >= 2) {
+                console.log('two')
+                getOptimumRoute(`point=${points[0]}&point=${points[1]}&locale=en-US&vehicle=car&weighting=fastest&elevation=true&use_miles=false&layer=OpenStreetMap&points_encoded=false`)
+            }
         }
 
     </script>

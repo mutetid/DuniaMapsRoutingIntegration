@@ -38,12 +38,23 @@ app.get('/', async (req, res) => {
     res.render('index')
 })
 
-app.get('/route', (req,res)=>{
-    fetch('https://api.duniamaps.com/route?point=-1.297948,36.816498&point=-1.282815,36.810314&locale=en-US&vehicle=car&weighting=fastest&elevation=true&use_miles=false&layer=OpenStreetMap&points_encoded=false')
+app.get('/route/:query', (req,res)=>{
+    fetch(`https://api.duniamaps.com/route?${req.params.query}`)
         .then(res => res.json())
         .then(json => {
             let data = json
             res.json(data)   
+        }).catch(err => {
+            console.log(err)
+        })
+})
+
+app.get('/poi/:query', (req, res) => {
+    fetch(`https://api.duniamaps.com/poi?q=${req.params.query}&type=json&subcat=&apikey=API_KEY&limit=5&lat=-1.298424&lon=36.784720`)
+        .then(res => res.json())
+        .then(json => {
+            let data = json
+            res.json(data)
         }).catch(err => {
             console.log(err)
         })
